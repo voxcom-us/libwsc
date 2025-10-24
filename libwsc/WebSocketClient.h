@@ -5,7 +5,7 @@
  */
 
 #include <event2/bufferevent.h>
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
 #include <event2/bufferevent_ssl.h>
 #endif
 #include <event2/buffer.h>
@@ -26,7 +26,7 @@
 #include <condition_variable>
 #include <algorithm>
 
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
@@ -40,7 +40,7 @@
 
 #include <array>
 #include <deque>
-#if !USE_TLS
+#ifndef LIBWSC_WITH_TLS
 #include "sha1.hpp"
 #endif
 
@@ -255,7 +255,7 @@ private:
     std::atomic<ConnectionState> connection_state{ConnectionState::DISCONNECTED};
     std::condition_variable state_cv;
 
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
     SSL_CTX *ctx = nullptr;
     std::string getOpenSSLError();
     bool configureCiphers();

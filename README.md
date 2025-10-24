@@ -1,15 +1,8 @@
-**libwsc: C++11 WebSocket Client Library**
+# libwsc: C++11 WebSocket Client Library
 
-[![Autobahn TestSuite](https://img.shields.io/badge/Autobahn-passing-brightgreen)](https://amigniter.github.io/libwsc/autobahn/)
-[![Build libwsc](https://github.com/amigniter/libwsc/actions/workflows/ci.yml/badge.svg)](https://github.com/amigniter/libwsc/actions/workflows/ci.yml)
+*This is a fork of <https://github.com/amigniter/libwsc>*
 
-A lightweight, high-performance and fully-compliant WebSocket client written in C++11.
-
-Written solely for [mod_audio_stream](https://github.com/amigniter/mod_audio_stream) to provide low-latency audio streaming from FreeSWITCH to a WebSocket endpoint.
-
-Built on libevent; only zlib (for deflate) and OpenSSL (for TLS) are optional extras.
-
-**libwsc** is now offered as a standalone, fully RFC-6455 and [autobahn-testsuite](https://github.com/crossbario/autobahn-testsuite) compliant asynchronous client library. You can find test results [here](https://amigniter.github.io/libwsc/autobahn/index.html) (except test 2.1, we support one ping per-flight)
+A lightweight, high-performance and fully-compliant WebSocket client written in C++11. Built on libevent; zlib (for deflate) ships by default and OpenSSL (for TLS) stays enabled unless explicitly disabled.
 
 ---
 
@@ -18,7 +11,7 @@ Built on libevent; only zlib (for deflate) and OpenSSL (for TLS) are optional ex
 * RFC6455 compliant handshake, framing, masking, and control frames
 * Per-message deflate compression
 * Asynchronous reads/writes via **libevent** (`bufferevent`)
-* Optional TLS/SSL support using **OpenSSL**
+* TLS/SSL support using **OpenSSL** (enabled by default, can be disabled)
 * UTF-8 validation per WebSocket spec
 * Fully thread-safe: concurrent connect/disconnect/send/receive
 * CMake-based build for portability
@@ -31,21 +24,21 @@ Built on libevent; only zlib (for deflate) and OpenSSL (for TLS) are optional ex
 * C++11 compiler  (e.g., g++ or clang++)
 * [libevent](https://libevent.org/) (v2.0+)
 * Zlib (for compression)
-* OpenSSL (for TLS) - optional for plaintext builds
+* OpenSSL (for TLS) - required unless you disable TLS with `-DLIBWSC_DISABLE_TLS=ON`
 * CMake (>=3.10)
 * Runtime Libs: libevent, zlib, and OpenSSL libraries are typically present by default on most Linux distributions.
 
 ## Further reading
 
-- [BUILDING.md](docs/BUILDING.md) — build flags, prerequisites, install and CMAKE integration
-- [OPTIONS.md](docs/OPTIONS.md) — Additional options
+* [BUILDING.md](docs/BUILDING.md) — build flags, prerequisites, install and CMAKE integration
+* [OPTIONS.md](docs/OPTIONS.md) — Additional options
 
 ## Example
 
 You can find working demos in the [`examples/`](examples/) folder:
 
-- **threads.cpp** — shows multi-threaded send/receive (thread-safety demo)
-- **autobahn.cpp** — running tests against autobahntestsuite
+* **threads.cpp** — shows multi-threaded send/receive (thread-safety demo)
+* **autobahn.cpp** — running tests against autobahntestsuite
 
 ```cpp
 #include <iostream>

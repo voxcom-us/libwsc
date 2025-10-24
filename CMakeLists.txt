@@ -13,13 +13,13 @@ project(libwsc
 set (CMAKE_CXX_STANDARD 11)
 set (CXX_STANDARD_REQUIRED ON)
 
-option(USE_TLS "Enable TLS/SSL support using OpenSSL" OFF)
+option(LIBWSC_DISABLE_TLS "Disable TLS/SSL support and avoid the OpenSSL dependency" OFF)
 option(LIBWSC_USE_DEBUG "Enable debug (verbose) output" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries instead of static ones" OFF)
 
 set(LIBEVENT_COMPONENTS libevent pthreads)
 
-if(USE_TLS)
+if(NOT LIBWSC_DISABLE_TLS)
     list(APPEND LIBEVENT_COMPONENTS openssl)
     find_package(OpenSSL REQUIRED)
 endif()
@@ -69,8 +69,8 @@ if (LIBWSC_USE_DEBUG)
     target_compile_definitions(libwsc PRIVATE LIBWSC_USE_DEBUG)
 endif()
 
-if (USE_TLS)
-    target_compile_definitions(libwsc PRIVATE USE_TLS)
+if (NOT LIBWSC_DISABLE_TLS)
+    target_compile_definitions(libwsc PRIVATE LIBWSC_WITH_TLS=1)
     target_link_libraries(libwsc PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 endif()
 

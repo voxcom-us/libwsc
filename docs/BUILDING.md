@@ -1,4 +1,4 @@
-## Install Prerequisites
+# Install Prerequisites
 
 * **Ubuntu/Debian**
 
@@ -20,22 +20,21 @@
 
 Shared builds are available via `-DBUILD_SHARED_LIBS=ON`, but static is the default.
 
-- Supported flags
-  - -DUSE_TLS=ON, **OFF** by default (TLS support)
-  - -DLIBWSC_USE_DEBUG=ON, **OFF** by default (verbose debugging, logs to stdout|stderr or syslog)
-  - -DBUILD_SHARED_LIBS=ON, **OFF** by default
+* Supported flags
+  * -DLIBWSC_DISABLE_TLS=ON, **OFF** by default (build without TLS/OpenSSL)
+  * -DLIBWSC_USE_DEBUG=ON, **OFF** by default (verbose debugging, logs to stdout|stderr or syslog)
+  * -DBUILD_SHARED_LIBS=ON, **OFF** by default
 
 The easiest way is to clone the repository and use it in your cmake project via `add_sudirectory()`. You can also build a shared library:
 
 ```bash
-git clone git@github.com:amigniter/libwsc.git
+git clone git@github.com:voxcom-us/libwsc.git
 cd libwsc
 mkdir build && cd build
 
 # Shared library:
 cmake .. \
     -DCMAKE_BUILD_TYPE=Release  \
-    -DUSE_TLS=ON                \
     -DLIBWSC_USE_DEBUG=ON       \
     -DBUILD_SHARED_LIBS=ON
 make
@@ -44,18 +43,19 @@ sudo make install
 
 ### Integration
 
-**In-tree**
+**In-tree*
 
 ```cmake
 # Top-level CMakeLists.txt
-set(USE_TLS ON CACHE BOOL "" FORCE)
+# TLS is enabled by default. Disable it by setting LIBWSC_DISABLE_TLS to ON.
+set(LIBWSC_DISABLE_TLS OFF CACHE BOOL "" FORCE)
 add_subdirectory(path/to/libwsc)
 
 add_executable(myapp main.cpp)
 target_link_libraries(myapp PRIVATE libwsc)
 ```
 
-**Installed package**
+*#Installed package**
 
 ```cmake
 # After running install above:

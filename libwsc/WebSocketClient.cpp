@@ -159,13 +159,13 @@ void WebSocketClient::connect()
         return;
     }
 
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
     SSL *ssl = nullptr;
 #endif
 
     if (secure)
     {
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
 
         if (!initTLS())
         {
@@ -206,7 +206,7 @@ void WebSocketClient::connect()
             }
         }
 #else
-        log_error("TLS support not compiled in (USE_TLS=OFF), proceeding in insecure mode");
+        log_error("TLS support not compiled in (built without TLS), proceeding in insecure mode");
         secure = false;
 #endif
     }
@@ -235,7 +235,7 @@ void WebSocketClient::connect()
 
     if (secure)
     {
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
         m_bev = bufferevent_openssl_socket_new(base, -1, ssl, BUFFEREVENT_SSL_CONNECTING, bev_options);
         if (!m_bev)
         {
@@ -713,7 +713,7 @@ void WebSocketClient::cleanup()
         // For SSL, we need to do proper shutdown
         if (secure)
         {
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
             // Internally handled by libevent
             SSL *ssl = bufferevent_openssl_get_ssl(m_bev);
             if (ssl)
@@ -1802,7 +1802,7 @@ void WebSocketClient::handleEvent(bufferevent *bev, short events)
 
         if (secure)
         {
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
 
             SSL *ssl = bufferevent_openssl_get_ssl(bev);
             if (!ssl)
@@ -1852,7 +1852,7 @@ void WebSocketClient::handleEvent(bufferevent *bev, short events)
         ConnectionState new_state = ConnectionState::FAILED;
         if (secure)
         {
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
             unsigned long ssl_err = bufferevent_get_openssl_error(bev);
             if (ssl_err)
             {
@@ -1997,7 +1997,7 @@ void WebSocketClient::setConnectionTimeout(int timeout)
     connection_timeout = timeout;
 }
 
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
 
 /**
  * \brief Retrieves the most recent OpenSSL error message as a string.
@@ -2477,7 +2477,7 @@ std::string WebSocketClient::getWebSocketKey()
 std::string WebSocketClient::computeAccept(const std::string &key)
 {
     std::string buf = key + WS_MAGIC;
-#ifdef USE_TLS
+#ifdef LIBWSC_WITH_TLS
     unsigned char digest[SHA_DIGEST_LENGTH];
     SHA1(reinterpret_cast<const unsigned char *>(buf.data()),
          buf.size(),

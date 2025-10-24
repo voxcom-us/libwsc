@@ -1,4 +1,4 @@
-## Additional Options
+# Additional Options
 
 After setting up your URL and callbacks, you can tweak these behaviors before calling `connect()`:
 
